@@ -5,11 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sasinomierz</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
     <link rel="stylesheet" href="css/main.min.css">
 </head>
 
 <body>
+    <main class="sasinometer">
+        <h1 class="sasinometer__title"><span class="sasinometer__title--color">Sasin</span>omierz</h1>
+        <h2 class="sasinometer__description">Sasin to internetowa jednostka monetarna powstała w 2020 roku, po
+            nieodbytych
+            wyborach, które miały mieć miejsce 10 maja 2020. Jeden <span
+                class="sasinometer__description--color">sasin</span> jest równy <span
+                class="sasinometer__description--underline">70 mln zł</span>, czyli tyle ile kosztowało wydrukowanie
+            nieważnych kart wyborczych.</h2>
+        <p class="sasinometer__change-type"><span class="sasinometer__change-1">sas</span> <i
+                class="fas fa-arrow-right"></i> <span class="sasinometer__change-2">zł</span></p>
+        <input type="text" class="sasinometer__input" id="number" placeholder="Wpisz liczbę" aria-label="Wpisz liczbę">
 
+        <div class="sasinometer__radio-container">
+            <input type="radio" class="sasinometer__radio" checked>zł</input>
+            <input type="radio" class="sasinometer__radio">eur</input>
+            <input type="radio" class="sasinometer__radio">gbp</input>
+            <input type="radio" class="sasinometer__radio">usd</input>
+            <i class="fas fa-info-circle"></i>
+        </div>
+        <div class="sasinometer__btn-container">
+            <button class="sasinometer__btn">Przelicz</button>
+            <button class="sasinometer__btn">Zamień</button>
+            <button class="sasinometer__btn">Reset</button>
+        </div>
+        <p class="sasinometer__result">1 sas = <span class="sasinometer__result--color">7000000 zł</span></p>
+
+    </main>
 </body>
 
 </html>
