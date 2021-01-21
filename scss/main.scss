@@ -1,7 +1,8 @@
-// @import 'helpers/variables';
+@import 'helpers/variables';
+@import 'helpers/mixins';
 
-// @import 'basics/reset';
-// @import 'basics/typography';
-// @import 'basics/base';
+@import 'basics/reset';
+@import 'basics/typography';
+@import 'basics/base';
 
 @import 'layout/main-page';
