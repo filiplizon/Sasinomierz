@@ -26,8 +26,13 @@ body {
     }
 
     @include screen(tablet) {
-        height: 70vh;
+        height: 75vh;
         background-color: rgba(255, 255, 255, 0.98);
+    }
+
+    @include screen(desktop) {
+        // height: 60%;
+        width: 70%;
     }
 
     &__title {
@@ -61,6 +66,11 @@ body {
 
         @include screen(tablet) {
             font-size: $font-size-m;
+        }
+
+        @include screen(desktop) {
+            width: 95%;
+            line-height: 1.5;
         }
 
         &--color {
@@ -104,6 +114,11 @@ body {
             height: 40px;
             font-size: $font-size-m;
         }
+
+        @include screen(desktop) {
+            height: 60px;
+            font-size: $font-size-l;
+        }
     }
 
     &__radio {
@@ -125,6 +140,14 @@ body {
             -o-transform: scale(2);
         }
 
+        @include screen(desktop) {
+            transform: scale(2.5);
+            -webkit-transform: scale(2.5);
+            -moz-transform: scale(2.5);
+            -ms-transform: scale(2.5);
+            -o-transform: scale(2.5);
+        }
+
 
         &-container {
             font-size: $font-size-xs;
@@ -143,6 +166,10 @@ body {
                 font-size: $font-size-m;
                 width: 60%;
             }
+
+            @include screen(desktop) {
+                width: 70%;
+            }
         }
     }
 
@@ -155,7 +182,6 @@ body {
 
         @include screen(tablet) {
             font-size: $font-size-l;
-
         }
 
         &--color {
@@ -183,6 +209,10 @@ body {
         @include screen(tablet) {
             padding: 10px 15px;
             font-size: $font-size-m
+        }
+
+        @include screen(desktop) {
+            font-size: $font-size-l;
         }
 
         &:hover {
