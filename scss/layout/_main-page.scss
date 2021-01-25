@@ -1,6 +1,6 @@
 body {
     height: 100vh;
-    background-image: url(../img/sasin-bg.jpg);
+    background-image: url(../img/sasin-bg.JPG);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -109,6 +109,7 @@ body {
 
     &__change-type {
         font-size: $font-size-xs;
+        text-transform: uppercase;
 
         @include screen(mobile) {
             font-size: $font-size-m;

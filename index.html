@@ -21,25 +21,26 @@
                 class="sasinometer__description--color">sasin</span> jest równy <span
                 class="sasinometer__description--underline">70 mln zł</span>, czyli tyle ile kosztowało wydrukowanie
             nieważnych kart wyborczych.</h2>
-        <p class="sasinometer__change-type"><span class="sasinometer__change-1">sas</span> <i
-                class="fas fa-arrow-right"></i> <span class="sasinometer__change-2">zł</span></p>
+        <p class="sasinometer__change-type"><span class="sasinometer__change-1"></span> <i
+                class="fas fa-arrow-right"></i> <span class="sasinometer__change-2"></span></p>
 
 
         <div class="sasinometer__radio-container">
-            <input type="radio" class="sasinometer__radio" checked>zł</input>
-            <input type="radio" class="sasinometer__radio">eur</input>
-            <input type="radio" class="sasinometer__radio">gbp</input>
-            <input type="radio" class="sasinometer__radio">usd</input>
+            <input type="radio" class="sasinometer__radio" name="currency" checked>pln</input>
+            <input type="radio" class="sasinometer__radio" name="currency">eur</input>
+            <input type="radio" class="sasinometer__radio" name="currency">gbp</input>
+            <input type="radio" class="sasinometer__radio" name="currency">usd</input>
             <button class="sasinometer__info"><i class="fas fa-info-circle"></i></button>
         </div>
         <input type="text" class="sasinometer__input" id="number" placeholder="Wpisz liczbę" aria-label="Wpisz liczbę">
         <p class="sasinometer__result">1 sas = <span class="sasinometer__result--color">7000000 zł</span></p>
         <div class="sasinometer__btn-container">
-            <button class="sasinometer__btn">Przelicz</button>
-            <button class="sasinometer__btn">Zamień</button>
-            <button class="sasinometer__btn">Reset</button>
+            <button class="sasinometer__btn sasinometer__btn-convert">Przelicz</button>
+            <button class="sasinometer__btn sasinometer__btn-change">Zamień</button>
+            <button class="sasinometer__btn sasinometer__btn-reset">Reset</button>
         </div>
     </main>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
