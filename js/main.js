@@ -10,6 +10,7 @@ const result = document.querySelector('.sasinometer__result');
 const resultColor = document.querySelector('.sasinometer__result--color');
 
 const radios = document.querySelectorAll('.sasinometer__radio');
+const checkedRadio = document.getElementById('checked');
 
 const url = 'http://api.nbp.pl/api/exchangerates/rates/c/';
 
@@ -21,10 +22,16 @@ const sas = 'sas';
 
 let zloty, euro, funt, dollar, sasin;
 
-changeFromValue.textContent = pln;
-changeToValue.textContent = sas;
-result.textContent = '70000000 zł =';
-resultColor.textContent = '1 sas';
+const init = () => {
+    changeFromValue.textContent = pln;
+    changeToValue.textContent = sas;
+    result.textContent = '70000000 zł =';
+    resultColor.textContent = '1 sas';
+    converter.value = '';
+    checkedRadio.checked = true;
+}
+
+init()
 
 const changeCurrency = () => {
     if (changeToValue.textContent === sas) {
@@ -138,7 +145,6 @@ const sasToUsd = () => {
         })
 }
 
-
 radios.forEach(radio => {
     radio.addEventListener('change', () => {
         if (changeFromValue.textContent === sas) {
@@ -149,6 +155,7 @@ radios.forEach(radio => {
     })
 })
 
+resetBtn.addEventListener('click', init)
 changeBtn.addEventListener('click', changeCurrency);
 convertBtn.addEventListener('click', convertCurrency);
 converter.addEventListener('keydown', (e) => {
