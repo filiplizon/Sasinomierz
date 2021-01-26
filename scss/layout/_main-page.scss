@@ -242,22 +242,25 @@ body {
     }
 
     &__result {
-        font-size: $font-size-s;
 
-        @include screen(mobile) {
-            font-size: $font-size-m;
-        }
+        &-container {
+            font-size: $font-size-s;
 
-        @include screen(tablet) {
-            font-size: $font-size-l;
-        }
+            @include screen(mobile) {
+                font-size: $font-size-m;
+            }
 
-        @include screen(big-desktop) {
-            font-size: $font-size-m;
-        }
+            @include screen(tablet) {
+                font-size: $font-size-l;
+            }
 
-        @include screen(large) {
-            font-size: $font-size-l;
+            @include screen(big-desktop) {
+                font-size: $font-size-m;
+            }
+
+            @include screen(large) {
+                font-size: $font-size-l;
+            }
         }
 
         &--color {

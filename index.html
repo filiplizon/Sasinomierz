@@ -26,20 +26,22 @@
 
 
         <div class="sasinometer__radio-container">
-            <input type="radio" class="sasinometer__radio" name="currency" checked>pln</input>
-            <input type="radio" class="sasinometer__radio" name="currency">eur</input>
-            <input type="radio" class="sasinometer__radio" name="currency">gbp</input>
-            <input type="radio" class="sasinometer__radio" name="currency">usd</input>
+            <input type="radio" class="sasinometer__radio" name="currency" value="pln" checked>pln</input>
+            <input type="radio" class="sasinometer__radio" name="currency" value="eur">eur</input>
+            <input type="radio" class="sasinometer__radio" name="currency" value="gbp">gbp</input>
+            <input type="radio" class="sasinometer__radio" name="currency" value="usd">usd</input>
             <button class="sasinometer__info"><i class="fas fa-info-circle"></i></button>
         </div>
         <input type="text" class="sasinometer__input" id="number" placeholder="Wpisz liczbę" aria-label="Wpisz liczbę">
-        <p class="sasinometer__result">1 sas = <span class="sasinometer__result--color">7000000 zł</span></p>
+        <p class="sasinometer__result-container"><span class="sasinometer__result"></span> <span
+                class="sasinometer__result--color"></span></p>
         <div class="sasinometer__btn-container">
             <button class="sasinometer__btn sasinometer__btn-convert">Przelicz</button>
             <button class="sasinometer__btn sasinometer__btn-change">Zamień</button>
             <button class="sasinometer__btn sasinometer__btn-reset">Reset</button>
         </div>
     </main>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="js/main.js"></script>
 </body>
 
