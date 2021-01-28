@@ -6,21 +6,44 @@ const changeFromValue = document.querySelector('.sasinometer__change-1');
 const changeToValue = document.querySelector('.sasinometer__change-2');
 
 const converter = document.querySelector('.sasinometer__input');
+
 const result = document.querySelector('.sasinometer__result');
 const resultColor = document.querySelector('.sasinometer__result--color');
 
 const radios = document.querySelectorAll('.sasinometer__radio');
 const checkedRadio = document.getElementById('checked');
 
-const url = 'http://api.nbp.pl/api/exchangerates/rates/c/';
+const currencyCode = document.querySelector('.sasinometer__currency-code');
+const currencyRate = document.querySelector('.sasinometer__currency-result');
+const currencyRateContainer = document.querySelector('.sasinometer__currency-rate');
 
-const pln = 'pln';
-const eur = 'eur';
-const gbp = 'gbp';
-const usd = 'usd';
-const sas = 'sas';
+const pln = 'PLN';
+const eur = 'EUR';
+const gbp = 'GBP';
+const usd = 'USD';
+const chf = 'CHF';
+const sas = 'SAS';
 
-let zloty, euro, funt, dollar, sasin;
+let sasin, convertedValue, exchangeRate;
+
+const getRate = (currencyCode) => {
+    fetch(`https://api.ratesapi.io/api/latest?base=${currencyCode}&symbols=${pln}`)
+        .then(res => res.json())
+        .then(data => {
+            const rate = data.rates[pln];
+            exchangeRate = rate;
+        })
+}
+
+const showCurrentRate = (code, rate) => {
+    if (code === pln) {
+        currencyRateContainer.classList.add('sasinometer__currency-rate--hidden')
+    } else {
+        currencyRateContainer.classList.remove('sasinometer__currency-rate--hidden')
+        currencyCode.textContent = code;
+        currencyRate.textContent = rate.toFixed(2);
+    }
+}
 
 const init = () => {
     changeFromValue.textContent = pln;
@@ -29,11 +52,13 @@ const init = () => {
     resultColor.textContent = '1 sas';
     converter.value = '';
     checkedRadio.checked = true;
+    showCurrentRate(pln);
 }
 
-init()
+init();
 
 const changeCurrency = () => {
+    converter.value = '';
     if (changeToValue.textContent === sas) {
         changeToValue.textContent = changeFromValue.textContent;
         changeFromValue.textContent = sas;
@@ -44,125 +69,114 @@ const changeCurrency = () => {
 }
 
 const convertCurrency = () => {
-    if (converter.value !== "") {
+    let converterValue = converter.value;
+    if (converterValue !== "") {
         if (changeFromValue.textContent == pln || changeToValue.textContent == pln) {
-            changeToValue.textContent == sas ? plnToSas() : sasToPln();
+            changeToValue.textContent == sas ? plnToSas(converterValue) : sasToPln(converterValue);
         } else if (changeFromValue.textContent == eur || changeToValue.textContent == eur) {
-            changeToValue.textContent == sas ? eurToSas() : sasToEur();
+            changeToValue.textContent == sas ? eurToSas(converterValue) : sasToEur(converterValue);
         } else if (changeFromValue.textContent == gbp || changeToValue.textContent == gbp) {
-            changeToValue.textContent == sas ? gbpToSas() : sasToGbp();
+            changeToValue.textContent == sas ? gbpToSas(converterValue) : sasToGbp(converterValue);
         } else if (changeFromValue.textContent == usd || changeToValue.textContent == usd) {
-            changeToValue.textContent == sas ? usdToSas() : sasToUsd();
+            changeToValue.textContent == sas ? usdToSas(converterValue) : sasToUsd(converterValue);
+        } else if (changeFromValue.textContent == chf || changeToValue.textContent == chf) {
+            changeToValue.textContent == sas ? chfToSas(converterValue) : sasToChf(converterValue);
         }
-        converter.value = "";
+        converterValue = "";
     } else {
         result.textContent = '';
-        resultColor.textContent = 'Błąd. Podaj liczbę.';
+        resultColor.textContent = 'Podaj liczbę.';
     }
 }
 
-const plnToSas = () => {
-    sasin = converter.value / 70000000;
-    result.textContent = `${converter.value} ${pln} =`;
+const showSasinResult = (value, code) => {
+    result.textContent = `${value} ${code} =`;
     resultColor.textContent = `${sasin.toFixed(8)} ${sas}`;
 }
 
-const sasToPln = () => {
-    zloty = converter.value * 70000000;
-    result.textContent = `${converter.value} ${sas} =`;
-    resultColor.textContent = `${zloty} ${pln}`;
+const showConvertedResult = (value, code) => {
+    result.textContent = `${value} ${sas} =`;
+    resultColor.textContent = `${convertedValue.toFixed(2)} ${code}`;
 }
 
-const eurToSas = () => {
-    const converterValue = converter.value;
-    axios.get(url + eur)
-        .then(res => {
-            const status = Object.assign({}, ...res.data.rates);
-            euro = status.bid;
-            sasin = converterValue * euro / 70000000;
-            result.textContent = `${converterValue} ${eur} =`;
-            resultColor.textContent = `${sasin.toFixed(8)} ${sas}`;
-        })
+const calculateSasin = (value, rate) => {
+    sasin = value * rate / 70000000;
 }
 
-const sasToEur = () => {
-    const converterValue = converter.value;
-    axios.get(url + eur)
-        .then(res => {
-            const status = Object.assign({}, ...res.data.rates);
-            euro = status.bid;
-            euro = converterValue * 70000000 / euro;
-            result.textContent = `${converterValue} ${sas} =`;
-            resultColor.textContent = `${euro.toFixed(2)} ${eur}`;
-        })
+const calculateCurrency = (value, rate) => {
+    convertedValue = value * 70000000 / rate;
 }
 
-const gbpToSas = () => {
-    const converterValue = converter.value;
-    axios.get(url + gbp)
-        .then(res => {
-            const status = Object.assign({}, ...res.data.rates);
-            funt = status.bid;
-            sasin = converterValue * funt / 70000000;
-            result.textContent = `${converterValue} ${gbp} =`;
-            resultColor.textContent = `${sasin.toFixed(8)} ${sas}`;
-        })
+const plnToSas = value => {
+    calculateSasin(value, 1);
+    showSasinResult(value, pln);
 }
 
-const sasToGbp = () => {
-    const converterValue = converter.value;
-    axios.get(url + gbp)
-        .then(res => {
-            const status = Object.assign({}, ...res.data.rates);
-            funt = status.bid;
-            funt = converterValue * 70000000 / funt;
-            result.textContent = `${converterValue} ${sas} =`;
-            resultColor.textContent = `${funt.toFixed(2)} ${gbp}`;
-        })
+const sasToPln = value => {
+    calculateCurrency(value, 1);
+    showConvertedResult(value, pln);
 }
 
-const usdToSas = () => {
-    const converterValue = converter.value;
-    axios.get(url + usd)
-        .then(res => {
-            const status = Object.assign({}, ...res.data.rates);
-            dollar = status.bid;
-            sasin = converterValue * dollar / 70000000;
-            result.textContent = `${converterValue} ${usd} =`;
-            resultColor.textContent = `${sasin.toFixed(8)} ${sas}`;
-        })
+const eurToSas = value => {
+    calculateSasin(value, exchangeRate);
+    showSasinResult(value, eur);
 }
 
-const sasToUsd = () => {
-    const converterValue = converter.value;
-    axios.get(url + usd)
-        .then(res => {
-            const status = Object.assign({}, ...res.data.rates);
-            dollar = status.bid;
-            dollar = converterValue * 70000000 / dollar;
-            result.textContent = `${converterValue} ${sas} =`;
-            resultColor.textContent = `${dollar.toFixed(2)} ${usd}`;
-        })
+const sasToEur = value => {
+    calculateCurrency(value, exchangeRate);
+    showConvertedResult(value, eur);
+}
+
+const gbpToSas = value => {
+    calculateSasin(value, exchangeRate);
+    showSasinResult(value, gbp);
+}
+
+const sasToGbp = value => {
+    calculateCurrency(value, exchangeRate);
+    showConvertedResult(value, gbp);
+}
+
+const usdToSas = value => {
+    calculateSasin(value, exchangeRate);
+    showSasinResult(value, usd);
+}
+
+const sasToUsd = value => {
+    calculateCurrency(value, exchangeRate);
+    showConvertedResult(value, usd);
+}
+
+const chfToSas = value => {
+    calculateSasin(value, exchangeRate);
+    showSasinResult(value, chf);
+}
+
+const sasToChf = value => {
+    calculateCurrency(value, exchangeRate);
+    showConvertedResult(value, chf);
 }
 
 radios.forEach(radio => {
-    radio.addEventListener('change', () => {
+    radio.addEventListener('change', e => {
+        converter.value = '';
+        getRate(e.target.value);
         if (changeFromValue.textContent === sas) {
             changeToValue.textContent = radio.value;
         } else {
             changeFromValue.textContent = radio.value;
         }
+        setTimeout(() => {
+            showCurrentRate(e.target.value, exchangeRate);
+        }, 250)
     })
 })
 
-resetBtn.addEventListener('click', init)
+resetBtn.addEventListener('click', init);
 changeBtn.addEventListener('click', changeCurrency);
 convertBtn.addEventListener('click', convertCurrency);
-converter.addEventListener('keydown', (e) => {
-    if (e.keyCode == 188 || e.keyCode == 110) {
-        e.preventDefault();
-    }
+converter.addEventListener('keydown', e => {
     if (e.keyCode == 13) {
         convertCurrency();
     }
-})
+});
