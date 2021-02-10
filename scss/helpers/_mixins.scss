@@ -35,3 +35,9 @@
         }
     }
 }
+
+@mixin max-height($screen) {
+    @media (max-height: $screen+'px') {
+        @content;
+    }
+}

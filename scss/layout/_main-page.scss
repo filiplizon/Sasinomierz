@@ -45,6 +45,10 @@ body {
 
         @include screen(mobile) {
             font-size: $font-size-l;
+
+            @include max-height(641) {
+                font-size: $font-size-m;
+            }
         }
 
         @include screen(tablet) {
@@ -73,6 +77,10 @@ body {
         @include screen(mobile) {
             font-size: $font-size-s;
             padding: 0 15px;
+
+            @include max-height(641) {
+                font-size: $font-size-xs;
+            }
         }
 
         @include screen(tablet) {
@@ -164,6 +172,11 @@ body {
     }
 
     &__radio {
+        transform: scale(1.2);
+        -webkit-transform: scale(1.2);
+        -moz-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        -o-transform: scale(1.2);
 
         @include screen(mobile) {
             transform: scale(1.5);
@@ -171,6 +184,14 @@ body {
             -moz-transform: scale(1.5);
             -ms-transform: scale(1.5);
             -o-transform: scale(1.5);
+
+            @include max-height(641) {
+                transform: scale(1.2);
+                -webkit-transform: scale(1.2);
+                -moz-transform: scale(1.2);
+                -ms-transform: scale(1.2);
+                -o-transform: scale(1.2);
+            }
         }
 
         @include screen(tablet) {
@@ -221,7 +242,12 @@ body {
 
             @include screen(tablet) {
                 font-size: $font-size-m;
-                width: 70%;
+                width: 85%;
+            }
+
+            @include screen(desktop) {
+                width: 90%;
+                font-size: $font-size-l;
             }
 
             @include screen(big-desktop) {
@@ -266,6 +292,14 @@ body {
             }
 
             @include screen(tablet) {
+                font-size: $font-size-m;
+            }
+
+            @include screen(desktop) {
+                font-size: $font-size-l;
+            }
+
+            @include screen(big-desktop) {
                 font-size: $font-size-m;
             }
 
