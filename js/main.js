@@ -17,29 +17,26 @@ const currencyCode = document.querySelector('.sasinometer__currency-code');
 const currencyRate = document.querySelector('.sasinometer__currency-result');
 const currencyRateContainer = document.querySelector('.sasinometer__currency-rate');
 
-const pln = 'PLN';
-const eur = 'EUR';
-const gbp = 'GBP';
-const usd = 'USD';
-const chf = 'CHF';
 const sas = 'SAS';
+const currencies = ['PLN', 'EUR', 'GBP', 'USD', 'CHF'];
 
 const oneSasin = 70000000;
 
 let sasin, convertedValue, exchangeRate;
 
 const init = () => {
-    changeFromValue.textContent = pln;
+    getRate(currencies[1]);
+    changeFromValue.textContent = currencies[0];
     changeToValue.textContent = sas;
-    result.textContent = `${oneSasin.toLocaleString('pl-PL')} ${pln} =`;
+    result.textContent = `${oneSasin.toLocaleString('pl-PL')} ${currencies[0]} =`;
     resultColor.textContent = `1 ${sas}`;
     converter.value = '';
     checkedRadio.checked = true;
-    showCurrentRate(pln);
+    showCurrentRate(currencies[0]);
 }
 
 const showCurrentRate = (code, rate) => {
-    if (code === pln) {
+    if (code === currencies[0]) {
         currencyRateContainer.classList.add('sasinometer__currency-rate--hidden')
     } else {
         currencyRateContainer.classList.remove('sasinometer__currency-rate--hidden')
@@ -48,15 +45,15 @@ const showCurrentRate = (code, rate) => {
     }
 }
 
-init();
-
 const getRate = (currencyCode) => {
-    fetch(`https://api.ratesapi.io/api/latest?base=${currencyCode}&symbols=${pln}`)
+    fetch(`https://api.ratesapi.io/api/latest?base=${currencyCode}&symbols=${currencies[0]}`)
         .then(res => res.json())
         .then(data => {
-            exchangeRate = data.rates[pln];
+            exchangeRate = data.rates[currencies[0]];
         })
 }
+
+init();
 
 const changeCurrency = () => {
     converter.value = '';
@@ -69,93 +66,38 @@ const changeCurrency = () => {
     }
 }
 
+const showResult = (value, code) => {
+    if (changeToValue.textContent == sas) {
+        result.textContent = `${value.toLocaleString('pl-PL')} ${code} =`;
+        resultColor.textContent = `${sasin.toFixed(8)} ${sas}`;
+    } else {
+        result.textContent = `${value.toLocaleString('pl-PL')} ${sas} =`;
+        resultColor.textContent = `${convertedValue.toLocaleString('pl-PL')} ${code}`;
+    }
+}
+
+const calculate = (value, rate) => {
+    changeToValue.textContent == sas ? sasin = value * rate / oneSasin : convertedValue = value * oneSasin / rate;
+}
+
+const convert = (value, code) => {
+    changeFromValue.textContent == currencies[0] || changeToValue.textContent == currencies[0] ? calculate(value, 1) : calculate(value, exchangeRate);
+    showResult(value, code);
+}
+
 const convertCurrency = () => {
     let converterValue = converter.value;
     if (converterValue !== "") {
-        if (changeFromValue.textContent == pln || changeToValue.textContent == pln) {
-            changeToValue.textContent == sas ? plnToSas(converterValue) : sasToPln(converterValue);
-        } else if (changeFromValue.textContent == eur || changeToValue.textContent == eur) {
-            changeToValue.textContent == sas ? eurToSas(converterValue) : sasToEur(converterValue);
-        } else if (changeFromValue.textContent == gbp || changeToValue.textContent == gbp) {
-            changeToValue.textContent == sas ? gbpToSas(converterValue) : sasToGbp(converterValue);
-        } else if (changeFromValue.textContent == usd || changeToValue.textContent == usd) {
-            changeToValue.textContent == sas ? usdToSas(converterValue) : sasToUsd(converterValue);
-        } else if (changeFromValue.textContent == chf || changeToValue.textContent == chf) {
-            changeToValue.textContent == sas ? chfToSas(converterValue) : sasToChf(converterValue);
-        }
+        currencies.forEach(currency => {
+            if (changeFromValue.textContent == currency || changeToValue.textContent == currency) {
+                convert(converterValue, currency);
+            }
+        })
         converterValue = "";
     } else {
         result.textContent = '';
         resultColor.textContent = 'Podaj liczbę.';
     }
-}
-
-const showSasinResult = (value, code) => {
-    result.textContent = `${value.toLocaleString('pl-PL')} ${code} =`;
-    resultColor.textContent = `${sasin.toFixed(8)} ${sas}`;
-}
-
-const showConvertedResult = (value, code) => {
-    result.textContent = `${value.toLocaleString('pl-PL')} ${sas} =`;
-    resultColor.textContent = `${convertedValue.toLocaleString('pl-PL')} ${code}`;
-}
-
-const calculateSasin = (value, rate) => {
-    sasin = value * rate / oneSasin;
-}
-
-const calculateCurrency = (value, rate) => {
-    convertedValue = value * oneSasin / rate;
-}
-
-const plnToSas = value => {
-    calculateSasin(value, 1);
-    showSasinResult(value, pln);
-}
-
-const sasToPln = value => {
-    calculateCurrency(value, 1);
-    showConvertedResult(value, pln);
-}
-
-const eurToSas = value => {
-    calculateSasin(value, exchangeRate);
-    showSasinResult(value, eur);
-}
-
-const sasToEur = value => {
-    calculateCurrency(value, exchangeRate);
-    showConvertedResult(value, eur);
-}
-
-const gbpToSas = value => {
-    calculateSasin(value, exchangeRate);
-    showSasinResult(value, gbp);
-}
-
-const sasToGbp = value => {
-    calculateCurrency(value, exchangeRate);
-    showConvertedResult(value, gbp);
-}
-
-const usdToSas = value => {
-    calculateSasin(value, exchangeRate);
-    showSasinResult(value, usd);
-}
-
-const sasToUsd = value => {
-    calculateCurrency(value, exchangeRate);
-    showConvertedResult(value, usd);
-}
-
-const chfToSas = value => {
-    calculateSasin(value, exchangeRate);
-    showSasinResult(value, chf);
-}
-
-const sasToChf = value => {
-    calculateCurrency(value, exchangeRate);
-    showConvertedResult(value, chf);
 }
 
 radios.forEach(radio => {
