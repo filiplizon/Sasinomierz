@@ -24,15 +24,18 @@ const usd = 'USD';
 const chf = 'CHF';
 const sas = 'SAS';
 
+const oneSasin = 70000000;
+
 let sasin, convertedValue, exchangeRate;
 
-const getRate = (currencyCode) => {
-    fetch(`https://api.ratesapi.io/api/latest?base=${currencyCode}&symbols=${pln}`)
-        .then(res => res.json())
-        .then(data => {
-            const rate = data.rates[pln];
-            exchangeRate = rate;
-        })
+const init = () => {
+    changeFromValue.textContent = pln;
+    changeToValue.textContent = sas;
+    result.textContent = `${oneSasin.toLocaleString('pl-PL')} ${pln} =`;
+    resultColor.textContent = `1 ${sas}`;
+    converter.value = '';
+    checkedRadio.checked = true;
+    showCurrentRate(pln);
 }
 
 const showCurrentRate = (code, rate) => {
@@ -45,17 +48,15 @@ const showCurrentRate = (code, rate) => {
     }
 }
 
-const init = () => {
-    changeFromValue.textContent = pln;
-    changeToValue.textContent = sas;
-    result.textContent = '70000000 zł =';
-    resultColor.textContent = '1 sas';
-    converter.value = '';
-    checkedRadio.checked = true;
-    showCurrentRate(pln);
-}
-
 init();
+
+const getRate = (currencyCode) => {
+    fetch(`https://api.ratesapi.io/api/latest?base=${currencyCode}&symbols=${pln}`)
+        .then(res => res.json())
+        .then(data => {
+            exchangeRate = data.rates[pln];
+        })
+}
 
 const changeCurrency = () => {
     converter.value = '';
@@ -90,21 +91,21 @@ const convertCurrency = () => {
 }
 
 const showSasinResult = (value, code) => {
-    result.textContent = `${value} ${code} =`;
+    result.textContent = `${value.toLocaleString('pl-PL')} ${code} =`;
     resultColor.textContent = `${sasin.toFixed(8)} ${sas}`;
 }
 
 const showConvertedResult = (value, code) => {
-    result.textContent = `${value} ${sas} =`;
-    resultColor.textContent = `${convertedValue.toFixed(2)} ${code}`;
+    result.textContent = `${value.toLocaleString('pl-PL')} ${sas} =`;
+    resultColor.textContent = `${convertedValue.toLocaleString('pl-PL')} ${code}`;
 }
 
 const calculateSasin = (value, rate) => {
-    sasin = value * rate / 70000000;
+    sasin = value * rate / oneSasin;
 }
 
 const calculateCurrency = (value, rate) => {
-    convertedValue = value * 70000000 / rate;
+    convertedValue = value * oneSasin / rate;
 }
 
 const plnToSas = value => {
